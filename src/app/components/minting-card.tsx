@@ -50,7 +50,7 @@ export function MintingCard() {
           </div>
           <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full bg-accent transition-all duration-300"
+              className="h-full bg-black transition-all duration-300"
               style={{ width: `${percentageMinted}%` }}
             />
           </div>
@@ -86,7 +86,7 @@ export function MintingCard() {
         {/* Total Cost */}
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <span className="text-sm font-medium text-foreground">Total</span>
-          <span className="text-lg font-semibold text-accent">
+          <span className="text-lg font-semibold text-muted-foreground">
             {(mintPrice * quantity).toFixed(4)} ETH
           </span>
         </div>

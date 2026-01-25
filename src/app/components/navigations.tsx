@@ -18,7 +18,7 @@ export function Navigation() {
       </div>
       <Button 
         variant="outline" 
-        className="bg-primary text-primary-foreground hover:bg-primary/90"
+        className="bg-primary text-primary-foreground hover:bg-gray-400 font-medium transition-colors"
       >
         Connect Wallet
       </Button>
