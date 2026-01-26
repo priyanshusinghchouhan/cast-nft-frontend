@@ -4,12 +4,16 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Loader2, Check, AlertCircle } from 'lucide-react';
+import { useNFTMint } from '@/hooks/useNFTmint';
 
 type MintState = 'idle' | 'loading' | 'success' | 'error';
 
 export function MintingCard() {
   const [state, setState] = useState<MintState>('idle');
   const [quantity, setQuantity] = useState(1);
+  
+  const {totalSupply} = useNFTMint();
+  console.log("total supply", totalSupply);
 
   // Mock data
   const totalMinted = 4250;
@@ -180,6 +184,15 @@ export function MintingCard() {
             : 'Connect wallet to mint'}
         </p>
       )}
+
+      <div>
+      <p>
+        Total Minted:{' '}
+        <strong>
+          {totalSupply !== undefined ? totalSupply?.toString() : 'Loading...'}
+        </strong>
+      </p>
+    </div>
     </Card>
   );
 }

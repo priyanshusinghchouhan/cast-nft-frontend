@@ -16,7 +16,7 @@ export function Navigation() {
           </a>
         </div>
       </div>
-      <ConnectButton></ConnectButton>
+      <ConnectButton />
     </nav>
   );
 }
