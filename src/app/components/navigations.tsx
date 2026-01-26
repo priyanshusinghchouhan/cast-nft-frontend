@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export function Navigation() {
   return (
@@ -16,12 +16,7 @@ export function Navigation() {
           </a>
         </div>
       </div>
-      <Button 
-        variant="outline" 
-        className="bg-primary text-primary-foreground hover:bg-gray-400 font-medium transition-colors"
-      >
-        Connect Wallet
-      </Button>
+      <ConnectButton></ConnectButton>
     </nav>
   );
 }
