@@ -12,17 +12,25 @@ export function MintingCard() {
   const [state, setState] = useState<MintState>('idle');
   const [quantity, setQuantity] = useState(1);
   
-  const {totalSupply} = useNFTMint();
+  const { 
+    isConnected,
+    address,
+    totalSupply, 
+    remainingSupply,
+    maxSupply, 
+    maxPerWallet, 
+    mintPrice,
+    userMinted } = useNFTMint();
   console.log("total supply", totalSupply);
 
   // Mock data
   const totalMinted = 4250;
-  const maxSupply = 5000;
-  const mintPrice = 0.001;
-  const userMinted = 3;
-  const maxPerWallet = 5;
-  const remaining = maxSupply - totalMinted;
-  const percentageMinted = (totalMinted / maxSupply) * 100;
+  const maxsupply = 5000;
+  const mintPrices = 0.001;
+  const userMinteddd = 3;
+  const maxperWallet = 5;
+  const remaining = maxsupply - totalMinted;
+  const percentageMinted = (totalMinted / maxsupply) * 100;
 
   const handleMint = () => {
     setState('loading');
@@ -33,7 +41,7 @@ export function MintingCard() {
     }, 2000);
   };
 
-  const canMint = userMinted + quantity <= maxPerWallet && remaining > 0;
+  const canMint = userMinteddd + quantity <= maxperWallet && remaining > 0;
 
   return (
     <Card className="w-full max-w-md bg-card border border-border rounded-lg p-8">
@@ -49,7 +57,7 @@ export function MintingCard() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-foreground">Progress</span>
             <span className="text-sm text-muted-foreground">
-              {totalMinted.toLocaleString()} / {maxSupply.toLocaleString()}
+              {totalMinted.toLocaleString()} / {maxsupply.toLocaleString()}
             </span>
           </div>
           <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -76,14 +84,14 @@ export function MintingCard() {
         {/* Price */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Mint Price</span>
-          <span className="text-sm font-medium text-foreground">{mintPrice} ETH</span>
+          <span className="text-sm font-medium text-foreground">{mintPrices} ETH</span>
         </div>
 
         {/* User Minted */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Your Mints</span>
           <span className="text-sm font-medium text-foreground">
-            {userMinted} / {maxPerWallet}
+            {userMinteddd} / {maxperWallet}
           </span>
         </div>
 
@@ -91,7 +99,7 @@ export function MintingCard() {
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <span className="text-sm font-medium text-foreground">Total</span>
           <span className="text-lg font-semibold text-muted-foreground">
-            {(mintPrice * quantity).toFixed(4)} ETH
+            {(mintPrices * quantity).toFixed(4)} ETH
           </span>
         </div>
       </div>
@@ -114,11 +122,11 @@ export function MintingCard() {
           <input
             type="number"
             min="1"
-            max={maxPerWallet - userMinted}
+            max={maxperWallet - userMinteddd}
             value={quantity}
             onChange={(e) => {
               const val = Math.min(
-                maxPerWallet - userMinted,
+                maxperWallet - userMinteddd,
                 Math.max(1, parseInt(e.target.value) || 1)
               );
               setQuantity(val);
@@ -130,9 +138,9 @@ export function MintingCard() {
             variant="outline"
             size="sm"
             onClick={() =>
-              setQuantity(Math.min(maxPerWallet - userMinted, quantity + 1))
+              setQuantity(Math.min(maxperWallet - userMinteddd, quantity + 1))
             }
-            disabled={quantity >= maxPerWallet - userMinted || state !== 'idle'}
+            disabled={quantity >= maxperWallet - userMinteddd || state !== 'idle'}
             className="w-10 h-10 p-0"
           >
             +
@@ -179,7 +187,7 @@ export function MintingCard() {
 
       {!canMint && remaining > 0 && state === 'idle' && (
         <p className="text-xs text-muted-foreground text-center mt-3">
-          {userMinted >= maxPerWallet
+          {userMinteddd >= maxperWallet
             ? 'Max mints per wallet reached'
             : 'Connect wallet to mint'}
         </p>
