@@ -3,6 +3,8 @@
 import { NFT_CONTRACT_ADDRESS } from '../constants/constants';
 import castNftABI from '../abi/castNft.json';
 import { useAccount, useReadContract } from 'wagmi';
+import { Address } from 'viem';
+
 
 export function useNFTMint() {
   const { address, isConnected } = useAccount();

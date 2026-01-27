@@ -22,15 +22,18 @@ export function MintingCard() {
     mintPrice,
     userMinted } = useNFTMint();
   console.log("total supply", totalSupply);
+  console.log("maxSupply", maxSupply);
 
   // Mock data
-  const totalMinted = 4250;
-  const maxsupply = 5000;
+
   const mintPrices = 0.001;
   const userMinteddd = 3;
   const maxperWallet = 5;
-  const remaining = maxsupply - totalMinted;
+ 
+  const totalMinted = Number(totalSupply);
+  const maxsupply = Number(maxSupply);
   const percentageMinted = (totalMinted / maxsupply) * 100;
+   const remaining = maxsupply - totalMinted;
 
   const handleMint = () => {
     setState('loading');
@@ -57,7 +60,7 @@ export function MintingCard() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-foreground">Progress</span>
             <span className="text-sm text-muted-foreground">
-              {totalMinted.toLocaleString()} / {maxsupply.toLocaleString()}
+              {totalSupply?.toLocaleString()} / {maxSupply?.toLocaleString()}
             </span>
           </div>
           <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -72,7 +75,7 @@ export function MintingCard() {
         <div className="flex items-center justify-between pt-2">
           <span className="text-sm text-muted-foreground">Remaining</span>
           <span className="text-sm font-medium text-foreground">
-            {remaining.toLocaleString()}
+            {remainingSupply?.toLocaleString()}
           </span>
         </div>
       </div>
@@ -192,15 +195,6 @@ export function MintingCard() {
             : 'Connect wallet to mint'}
         </p>
       )}
-
-      <div>
-      <p>
-        Total Minted:{' '}
-        <strong>
-          {totalSupply !== undefined ? totalSupply?.toString() : 'Loading...'}
-        </strong>
-      </p>
-    </div>
     </Card>
   );
 }
