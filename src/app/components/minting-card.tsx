@@ -1,39 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Loader2, Check, AlertCircle } from 'lucide-react';
 import { useNFTMint } from '@/hooks/useNFTmint';
+import { formatEther } from 'viem';
 
 type MintState = 'idle' | 'loading' | 'success' | 'error';
 
 export function MintingCard() {
   const [state, setState] = useState<MintState>('idle');
   const [quantity, setQuantity] = useState(1);
+
   
   const { 
     isConnected,
     address,
+    isLoadingLimits,
     totalSupply, 
     remainingSupply,
     maxSupply, 
     maxPerWallet, 
     mintPrice,
-    userMinted } = useNFTMint();
+    userMinted,
+    maxMintable } = useNFTMint();
   console.log("total supply", totalSupply);
   console.log("maxSupply", maxSupply);
-
-  // Mock data
-
-  const mintPrices = 0.001;
-  const userMinteddd = 3;
-  const maxperWallet = 5;
  
   const totalMinted = Number(totalSupply);
   const maxsupply = Number(maxSupply);
+
   const percentageMinted = (totalMinted / maxsupply) * 100;
    const remaining = maxsupply - totalMinted;
+
+
+  console.log("maxmintable: ", maxMintable)
 
   const handleMint = () => {
     setState('loading');
@@ -44,7 +46,20 @@ export function MintingCard() {
     }, 2000);
   };
 
-  const canMint = userMinteddd + quantity <= maxperWallet && remaining > 0;
+  useEffect(() => {
+  if (maxMintable > 0 && quantity > maxMintable) {
+    setQuantity(maxMintable);
+  }
+}, [maxMintable, quantity]);
+
+
+
+const canMint =
+  !isLoadingLimits &&
+  quantity > 0 &&
+  quantity <= maxMintable &&
+  remainingSupply !== undefined
+
 
   return (
     <Card className="w-full max-w-md bg-card border border-border rounded-lg p-8">
@@ -53,6 +68,7 @@ export function MintingCard() {
         <h2 className="text-2xl font-semibold text-foreground mb-2">Mint NFT</h2>
         <p className="text-sm text-muted-foreground">Join the collection</p>
       </div>
+
 
       {/* Progress Section */}
       <div className="mb-8 space-y-4">
@@ -87,14 +103,15 @@ export function MintingCard() {
         {/* Price */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Mint Price</span>
-          <span className="text-sm font-medium text-foreground">{mintPrices} ETH</span>
+          <span className="text-sm font-medium text-foreground">
+            {mintPrice ? formatEther(mintPrice as bigint): '0.001'} ETH</span>
         </div>
 
         {/* User Minted */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Your Mints</span>
           <span className="text-sm font-medium text-foreground">
-            {userMinteddd} / {maxperWallet}
+            {userMinted?.toLocaleString() || '0'} / {maxPerWallet?.toLocaleString() || '5'}
           </span>
         </div>
 
@@ -102,7 +119,7 @@ export function MintingCard() {
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <span className="text-sm font-medium text-foreground">Total</span>
           <span className="text-lg font-semibold text-muted-foreground">
-            {(mintPrices * quantity).toFixed(4)} ETH
+            {"0"} ETH
           </span>
         </div>
       </div>
@@ -122,14 +139,15 @@ export function MintingCard() {
           >
             −
           </Button>
+
           <input
             type="number"
             min="1"
-            max={maxperWallet - userMinteddd}
+            max={maxMintable}
             value={quantity}
             onChange={(e) => {
               const val = Math.min(
-                maxperWallet - userMinteddd,
+                maxMintable, 
                 Math.max(1, parseInt(e.target.value) || 1)
               );
               setQuantity(val);
@@ -137,13 +155,14 @@ export function MintingCard() {
             disabled={state !== 'idle'}
             className="flex-1 h-10 px-3 text-center border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent disabled:opacity-50"
           />
+
           <Button
             variant="outline"
             size="sm"
             onClick={() =>
-              setQuantity(Math.min(maxperWallet - userMinteddd, quantity + 1))
+              setQuantity(q => Math.min(maxMintable, q + 1))
             }
-            disabled={quantity >= maxperWallet - userMinteddd || state !== 'idle'}
+            disabled={isLoadingLimits || quantity >= maxMintable || state !== 'idle'}
             className="w-10 h-10 p-0"
           >
             +
@@ -190,7 +209,7 @@ export function MintingCard() {
 
       {!canMint && remaining > 0 && state === 'idle' && (
         <p className="text-xs text-muted-foreground text-center mt-3">
-          {userMinteddd >= maxperWallet
+          {(userMinted as number) >= (maxPerWallet as number)
             ? 'Max mints per wallet reached'
             : 'Connect wallet to mint'}
         </p>

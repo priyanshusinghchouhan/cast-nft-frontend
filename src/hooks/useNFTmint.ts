@@ -3,7 +3,7 @@
 import { NFT_CONTRACT_ADDRESS } from '../constants/constants';
 import castNftABI from '../abi/castNft.json';
 import { useAccount, useReadContract } from 'wagmi';
-import { Address } from 'viem';
+import { useMemo } from 'react';
 
 
 export function useNFTMint() {
@@ -46,15 +46,30 @@ export function useNFTMint() {
     args: address ? [address] : undefined
   });
 
+  const isLoadingLimits =
+  maxPerWallet === undefined || userMinted === undefined;
+
+const maxMintable = useMemo(() => {
+  if (isLoadingLimits) return 0;
+  return Math.max(
+    0,
+    Number(maxPerWallet) - Number(userMinted)
+  );
+}, [isLoadingLimits, maxPerWallet, userMinted]);
+
+
   return {
     address,
     isConnected,
+    isLoadingLimits,
 
     totalSupply,
     maxSupply,
     remainingSupply,
     mintPrice,
     maxPerWallet,
-    userMinted
+    userMinted,
+
+    maxMintable
   };
 }

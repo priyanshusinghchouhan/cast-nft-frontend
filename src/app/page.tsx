@@ -1,7 +1,10 @@
+'use client';
+
 import { Navigation } from './components/navigations';
 import { MintingCard } from './components/minting-card';
 
 export default function Home() {
+
   return (
     <div className="min-h-screen bg-linear-to-b from-background via-background to-accent/5">
       <Navigation />
@@ -23,7 +26,7 @@ export default function Home() {
         {/* Info Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full max-w-4xl mx-auto mb-4">
           <div className="text-center">
-            <div className="text-3xl font-bold text-muted-foreground mb-2">5,000</div>
+            <div className="text-3xl font-bold text-muted-foreground mb-2">1,000</div>
             <p className="text-sm text-muted-foreground">Total Collection</p>
           </div>
           <div className="text-center">
