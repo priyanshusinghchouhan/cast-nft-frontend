@@ -388,4 +388,4 @@ export const castNftABI = [
         { "name": "account", "type": "address", "internalType": "address" }
       ]
     }
-  ]
+  ]as const ;

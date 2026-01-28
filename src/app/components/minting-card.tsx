@@ -27,23 +27,17 @@ export function MintingCard() {
     maxMintable } = useNFTMint();
   console.log("total supply", totalSupply);
   console.log("maxSupply", maxSupply);
+  console.log("mintPrice", mintPrice);
  
-  const totalMinted = Number(totalSupply);
-  const maxsupply = Number(maxSupply);
+  const totalMinted = totalSupply ? Number(totalSupply) : 0;
+  const maxSupplyNum = maxSupply ? Number(maxSupply) : 0; 
 
-  const percentageMinted = (totalMinted / maxsupply) * 100;
-   const remaining = maxsupply - totalMinted;
-
+  const percentageMinted = maxSupplyNum > 0 ? (totalMinted / maxSupplyNum) * 100 : 0;
 
   console.log("maxmintable: ", maxMintable)
 
   const handleMint = () => {
-    setState('loading');
-    // Simulate minting
-    setTimeout(() => {
-      setState('success');
-      setTimeout(() => setState('idle'), 3000);
-    }, 2000);
+
   };
 
   useEffect(() => {
@@ -54,15 +48,20 @@ export function MintingCard() {
 
 
 
-
+const totalMintPrice = useMemo(() => {
+  if (!mintPrice || quantity <= 0) return 0n;
+  return mintPrice * BigInt(quantity);
+}, [mintPrice, quantity]);
 
 
 
 const canMint =
   !isLoadingLimits &&
+  isConnected &&
   quantity > 0 &&
   quantity <= maxMintable &&
-  remainingSupply !== undefined
+  (remainingSupply ?? 0n) > 0n;
+
 
 
   return (
@@ -108,7 +107,7 @@ const canMint =
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">Mint Price</span>
           <span className="text-sm font-medium text-foreground">
-            {mintPrice ? formatEther(mintPrice as bigint): '0.001'} ETH</span>
+            {mintPrice ? formatEther(mintPrice): '0.001'} ETH</span>
         </div>
 
         {/* User Minted */}
@@ -123,7 +122,7 @@ const canMint =
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <span className="text-sm font-medium text-foreground">Total</span>
           <span className="text-lg font-semibold text-muted-foreground">
-            {} ETH
+            {formatEther(totalMintPrice)} ETH
           </span>
         </div>
       </div>
@@ -191,7 +190,7 @@ const canMint =
         </div>
       )}
 
-      {remaining === 0 && (
+      {remainingSupply === 0n && (
         <div className="mb-6 p-3 bg-muted border border-border rounded-md flex items-center gap-2">
           <AlertCircle className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground font-medium">
@@ -211,15 +210,16 @@ const canMint =
         {state === 'loading' ? 'Minting...' : state === 'success' ? 'Minted!' : 'Mint NFT'}
       </Button>
 
-      {!canMint && remaining > 0 && state === 'idle' && (
+      {!canMint && remainingSupply !== undefined && remainingSupply > 0n  
+        && state === 'idle' && (
         <p className="text-xs text-muted-foreground text-center mt-3">
-          {(userMinted as number) >= (maxPerWallet as number)
-            ? 'Max mints per wallet reached'
-            : 'Connect wallet to mint'}
+          {!isConnected
+              ? 'Connect wallet to mint'
+              : quantity > maxMintable
+              ? 'Max mints per wallet reached'
+              : 'Mint unavailable'}
         </p>
       )}
     </Card>
   );
 }
-
-// Now ask chatgpt -> ""
