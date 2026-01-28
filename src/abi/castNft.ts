@@ -62,7 +62,9 @@ export const castNftABI = [
     {
       "type": "function",
       "name": "mint",
-      "inputs": [],
+      "inputs": [
+        { "name": "quantity", "type": "uint256", "internalType": "uint256" }
+      ],
       "outputs": [],
       "stateMutability": "payable"
     },
@@ -388,4 +390,4 @@ export const castNftABI = [
         { "name": "account", "type": "address", "internalType": "address" }
       ]
     }
-  ]as const ;
+  ] as const ;
