@@ -6,7 +6,7 @@ export const SUPPORTED_CHAIN = sepolia;
 
 // ---- Contract ----
 export const NFT_CONTRACT_ADDRESS =
-  "0xde1416e10FF9F66a7Cc9a3A992A9c23114877612";
+  "0x8E01B5fA249D02879eE11AFD967B741c8a60e011";
 
 // ---- Mint config (UI helpers, not authority) ----
 export const MINT_PRICE_ETH = "0.001";
