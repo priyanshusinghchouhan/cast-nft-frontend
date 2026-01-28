@@ -1,4 +1,4 @@
-[
+export const castNftABI = [
     { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
     {
       "type": "function",

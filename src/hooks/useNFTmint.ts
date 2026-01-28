@@ -1,7 +1,7 @@
 'use client';
 
 import { NFT_CONTRACT_ADDRESS } from '../constants/constants';
-import castNftABI from '../abi/castNft.json';
+import {castNftABI} from "../abi/castNft";
 import { useAccount, useReadContract } from 'wagmi';
 import { useMemo } from 'react';
 
@@ -56,6 +56,9 @@ const maxMintable = useMemo(() => {
     Number(maxPerWallet) - Number(userMinted)
   );
 }, [isLoadingLimits, maxPerWallet, userMinted]);
+
+
+
 
 
   return {

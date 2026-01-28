@@ -54,6 +54,10 @@ export function MintingCard() {
 
 
 
+
+
+
+
 const canMint =
   !isLoadingLimits &&
   quantity > 0 &&
@@ -119,7 +123,7 @@ const canMint =
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <span className="text-sm font-medium text-foreground">Total</span>
           <span className="text-lg font-semibold text-muted-foreground">
-            {"0"} ETH
+            {} ETH
           </span>
         </div>
       </div>
@@ -217,3 +221,5 @@ const canMint =
     </Card>
   );
 }
+
+// Now ask chatgpt -> ""
