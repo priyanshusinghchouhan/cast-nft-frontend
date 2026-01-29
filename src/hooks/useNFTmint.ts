@@ -80,7 +80,7 @@ export function useNFTMint() {
     setTxHash(hash);
   };
 
-  const { isSuccess, isLoading } = useWaitForTransactionReceipt({
+  const { isSuccess } = useWaitForTransactionReceipt({
     hash: txHash,
     query: {
       enabled: !!txHash,
@@ -111,6 +111,7 @@ export function useNFTMint() {
 
     mintNFT,
     isPending,
-    isSuccess
+    isSuccess,
+    txHash
   };
 }
