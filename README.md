@@ -3,6 +3,8 @@
 CastNFT is a full-stack Web3 NFT minting application built with **Solidity + Next.js + wagmi**.  
 It allows users to mint NFTs from a deployed ERC-721 smart contract with **real-time UI updates**, **wallet-based limits**, and **transaction-aware UX**.
 
+**Smart Contract :-** https://github.com/priyanshusinghchouhan/cast-nft-contract
+
 <small> Production-ready Web3 NFT minting dApp built with Solidity + Next.js. **Built, deployed, and shipped end-to-end**. </small>
 
 <img width="1469" height="780" alt="image" src="https://github.com/user-attachments/assets/3d81491b-3396-4d93-9fa1-6511203f0152" />
