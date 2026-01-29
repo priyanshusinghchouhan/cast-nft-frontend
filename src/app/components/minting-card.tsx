@@ -27,18 +27,14 @@ export function MintingCard() {
     mintNFT,
     isPending,
     isSuccess,
+    txHash,
   } = useNFTMint();
-  console.log("total supply", totalSupply);
-  console.log("maxSupply", maxSupply);
-  console.log("mintPrice", mintPrice);
 
   const totalMinted = totalSupply ? Number(totalSupply) : 0;
   const maxSupplyNum = maxSupply ? Number(maxSupply) : 0;
 
   const percentageMinted =
     maxSupplyNum > 0 ? (totalMinted / maxSupplyNum) * 100 : 0;
-
-  console.log("maxmintable: ", maxMintable);
 
   const handleMint = async () => {
     try {
@@ -70,6 +66,8 @@ export function MintingCard() {
       return () => clearTimeout(timer);
     }
   }, [txState]);
+
+  useEffect(() => setTxState("idle"), [address]);
 
   const totalMintPrice = useMemo(() => {
     if (!mintPrice || quantity <= 0) return 0n;
@@ -187,7 +185,9 @@ export function MintingCard() {
             variant="outline"
             size="sm"
             onClick={() => setQuantity((q) => Math.min(maxMintable, q + 1))}
-            disabled={isLoadingLimits || quantity >= maxMintable || txState !== "idle"}
+            disabled={
+              isLoadingLimits || quantity >= maxMintable || txState !== "idle"
+            }
             className="w-10 h-10 p-0"
           >
             +
@@ -202,6 +202,14 @@ export function MintingCard() {
           <span className="text-sm text-green-700 font-medium">
             Mint successful!
           </span>
+          <a
+            href={`https://sepolia.etherscan.io/tx/${txHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="m-0.5 inline-block text-xs text-green-700 underline"
+          >
+            View transaction on Etherscan
+          </a>
         </div>
       )}
 
@@ -232,7 +240,11 @@ export function MintingCard() {
         {txState == "pending" && (
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
         )}
-        {txState === "pending" ? "Minting..." : txState === "success" ? "Minted!" : "Mint NFT"}
+        {txState === "pending"
+          ? "Minting..."
+          : txState === "success"
+            ? "Minted!"
+            : "Mint NFT"}
       </Button>
 
       {!canMint &&
